@@ -73,9 +73,9 @@
 
       function loadGraph(yAxisData, graphType) {
         console.log(yAxisData, graphType);
-
         const ctx = document.getElementById("myCanvas").getContext("2d");
-        const myChart = new Chart(ctx, {
+        
+        /*const myChart = new Chart(ctx, {
           type: "bar",
           data: {
             labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -110,9 +110,63 @@
               },
             },
           },
+        });*/
+      
+        const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: tsvData.pos,
+            datasets: [{
+                label: "A",
+                data: tsvData.A,
+                fill: false,
+                borderColor: "#F203AA"
+              }, {
+                label: "C",
+                data: tsvData.C,
+                fill: false,  
+                borderColor: "#4692FA"
+              }]
+            },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Line Chart'
+              }
+            },
+            tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                      display: true,
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                      }
+                    }],
+                    yAxes: [{
+                      display: true,
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                      }
+                    }]
+                }
+          },
         });
       }
-
+      
       document.getElementById("loadGraph").addEventListener("click", (e) => {
         let yAxisOption;
         let graphTypeOption;
