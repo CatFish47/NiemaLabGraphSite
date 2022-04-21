@@ -19,6 +19,8 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        padding-left: 2vw;
+        background-color: #eee;
       }
 
       #graph {
@@ -27,6 +29,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        padding: 0vw 3vw;
       }
 
       #myCanvas {
@@ -71,11 +74,18 @@
       const BARS = "bars";
       const CURVES = "curves";
 
+      let chart;
+
       function loadGraph(yAxisData, graphType) {
-        console.log(yAxisData, graphType);
+        if (!yAxisData || !graphType) {
+          console.log("Please select graph options!");
+          return;
+        }
+
+        chart && chart.destroy();
 
         const ctx = document.getElementById("myCanvas").getContext("2d");
-        const myChart = new Chart(ctx, {
+        chart = new Chart(ctx, {
           type: "bar",
           data: {
             labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -123,7 +133,13 @@
           yAxisOption = PROPORTION;
         }
 
-        loadGraph();
+        if (document.getElementById("curves-option").checked) {
+          graphTypeOption = CURVES;
+        } else if (document.getElementById("bars-option").checked) {
+          graphTypeOption = BARS;
+        }
+
+        loadGraph(yAxisOption, graphTypeOption);
       });
     </script>
   </body>
