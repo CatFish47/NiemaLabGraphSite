@@ -82,9 +82,8 @@
         //   return;
         // }
 
-        chart && chart.destroy();
+        // chart && chart.destroy();
         /*
-        const ctx = document.getElementById("myCanvas").getContext("2d");
         chart = new Chart(ctx, {
           type: "bar",
           data: {
@@ -122,6 +121,7 @@
           },
         });*/
 
+        const ctx = document.getElementById("myCanvas").getContext("2d");
         const chart = new Chart(ctx, {
           type: "line",
           data: {
