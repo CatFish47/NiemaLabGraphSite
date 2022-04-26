@@ -1,39 +1,42 @@
 // TODO: with super large TSV files it might not finish loading before the graph is generated oops pls fix
 
+const { TYPES } = require("vega-lite/build/src/type");
+
 const tsvData = []
 
 async function tsvToArr(filename) {
     await d3.tsv(filename, function (data) {
         tsvData.push({
             value: parseInt(data.A),
-            type: 0,
+            type: TYPE_CODES.A,
             pos: parseInt(data.Pos),
         });
         tsvData.push({
             value: parseInt(data.G),
-            type: 1,
+            type: TYPE_CODES.B,
             pos: parseInt(data.Pos),
         });
         tsvData.push({
             value: parseInt(data.C),
-            type: 2,
+            type: TYPE_CODES.C,
             pos: parseInt(data.Pos),
         });
         tsvData.push({
             value: parseInt(data.T),
-            type: 3,
+            type: TYPE_CODES.T,
             pos: parseInt(data.Pos),
         });
         tsvData.push({
             value: parseInt(data.Other),
-            type: 4,
+            type: TYPE_CODES.OTHER,
             pos: parseInt(data.Pos),
         });
         tsvData.push({
             value: parseInt(data.A) + parseInt(data.G) + parseInt(data.C) + parseInt(data.T),
-            type: 5,
+            type: TYPES.TOTAL,
             pos: parseInt(data.Pos),
         });
+        BOUNDS.high += DATA_PER_POS;
     });
 }
 

@@ -1,313 +1,179 @@
 <html>
+  <head>
+    <title>Niema Website</title>
+    <style>
+      body {
+        font-family: "Helvetica", "Arial", sans-serif;
+        color: #444444;
+        background-color: #fafafa;
+      }
 
-<head>
-  <title>Niema Website</title>
-  <style>
-    body {
-      font-family: "Helvetica", "Arial", sans-serif;
-      color: #444444;
-      background-color: #fafafa;
-    }
+      #layout {
+        display: flex;
+        width: 100%;
+        height: 100%;
+      }
 
-    #layout {
-      display: flex;
-      width: 100%;
-      height: 100%;
-    }
+      #options {
+        height: 100%;
+        width: 20%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 2vw;
+        background-color: #eee;
+      }
 
-    #options {
-      height: 100%;
-      width: 20%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding-left: 2vw;
-      background-color: #eee;
-    }
+      #view {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 0vw 3vw;
+      }
 
-    #graph {
-      height: 100%;
-      width: 80%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding: 0vw 3vw;
-    }
-
-    #myCanvas {
-      width: 100%;
-    }
-
-    #view {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      padding: 0vw 3vw;
-    }
-  </style>
-</head>
-
-<body>
-  <div id="layout">
-    <div id="options">
-      <div>
-        <h3>Y-Axis Options</h3>
-        <form>
-          <input type="radio" id="count-option" name="yaxis" />
-          <label for="count-option">Count</label>
+      #range-selector {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="layout">
+      <div id="options">
+        <div>
+          <h3>Y-Axis Options</h3>
+          <form>
+            <input type="radio" id="count-option" name="yaxis" checked="true" />
+            <label for="count-option">Count</label>
+            <br />
+            <input type="radio" id="proportion-option" name="yaxis" />
+            <label for="proportion-option">Proportion</label>
+          </form>
+          <h3>Graph Type</h3>
+          <form>
+            <input
+              type="radio"
+              id="curves-option"
+              name="graphtype"
+              checked="true"
+            />
+            <label for="curves-option">Curves</label>
+            <br />
+            <input type="radio" id="bars-option" name="graphtype" />
+            <label for="bars-option">Bars</label>
+          </form>
+          <h3>Range of Data</h3>
+          <form id="range-option">
+            <input
+              type="radio"
+              id="all-option"
+              name="datarange"
+              checked="true"
+            />
+            <label for="all-option">All Data</label>
+            <br />
+            <input type="radio" id="limit-option" name="datarange" />
+            <label for="limit-option">Limit Data</label>
+          </form>
+          <div id="range-selector">
+            <span>Lower:</span>
+            <input type="text" id="lower-bound" />
+            <br />
+            <span>Upper:</span>
+            <input type="text" id="upper-bound" />
+          </div>
           <br />
-          <input type="radio" id="proportion-option" name="yaxis" />
-          <label for="proportion-option">Proportion</label>
-        </form>
-        <h3>Graph Type</h3>
-        <form>
-          <input type="radio" id="curves-option" name="graphtype" />
-          <label for="curves-option">Curves</label>
-          <br />
-          <input type="radio" id="bars-option" name="graphtype" />
-          <label for="bars-option">Bars</label>
-        </form>
-        <button id="loadGraph">Load Graph</button>
+          <button id="loadGraph">Load Graph</button>
+        </div>
+      </div>
+      <div id="graph">
+        <div id="view"></div>
       </div>
     </div>
-    <div id="graph">
-      <div id="view"></div>
-    </div>
-  </div>
 
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="tsv-loader-vega.js"></script>
-  <script type="text/javascript">
-    const COUNT = "count";
-    const PROPORTION = "proportion";
-    const BARS = "bars";
-    const CURVES = "curves";
+    <script src="init.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="tsv-loader-vega.js"></script>
+    <script src="line-graph.js"></script>
+    <script src="bar-chart.js"></script>
+    <script type="text/javascript">
+      let chart;
 
-    let chart;
-
-    function removeTotals(data) {
-      // for (let i = 0; i < data.length; i++) {
-      //   if (data.type === 5) {
-
-      //   }
-      // }
-      return data.filter(e => e.type !== 5);
-    }
-
-    function loadGraph(yAxisData, graphType) {
-      // if (!yAxisData || !graphType) {
-      //   console.log("Please select graph options!");
-      //   return;
-      // }
-
-      let viewElement = document.getElementById("view");
-      let width = viewElement.offsetWidth;
-      let height = viewElement.offsetHeight;
-
-      // line chart
-      /*var yourVlSpec = {
-        $schema: "https://vega.github.io/schema/vega/v5.json",
-        description: "A basic line chart example.",
-        width: 500,
-        height: 200,
-        padding: 5,
-
-        signals: [
-          {
-            name: "interpolate",
-            value: "linear",
-            bind: {
-              input: "select",
-              options: [
-                "basis",
-                "cardinal",
-                "catmull-rom",
-                "linear",
-                "monotone",
-                "natural",
-                "step",
-                "step-after",
-                "step-before",
-              ],
-            },
-          },
-        ],
-
-        data: [
-          {
-            name: "table",
-            values: tsvData,
-          },
-        ],
-
-        scales: [
-          {
-            name: "x",
-            type: "point",
-            range: "width",
-            domain: { data: "table", field: "pos" },
-          },
-          {
-            name: "y",
-            type: "linear",
-            range: "height",
-            nice: true,
-            zero: true,
-            domain: { data: "table", field: "value" },
-          },
-          {
-            name: "color",
-            type: "linear",
-            range: "height",
-            nice: true,
-            zero: true,
-            domain: { data: "table", field: "type" },
-          },
-        ],
-
-        axes: [
-          { orient: "bottom", scale: "x" },
-          { orient: "left", scale: "y" },
-        ],
-
-        marks: [
-          {
-            type: "group",
-            from: {
-              facet: {
-                name: "series",
-                data: "table",
-                groupby: "type",
-              },
-            },
-            marks: [
-              {
-                type: "line",
-                from: { data: "series" },
-                encode: {
-                  enter: {
-                    x: { scale: "x", field: "pos" },
-                    y: { scale: "y", field: "value" },
-                    stroke: { scale: "color", field: "type" },
-                    strokeWidth: { value: 2 },
-                  },
-                  update: {
-                    interpolate: { signal: "interpolate" },
-                    strokeOpacity: { value: 1 },
-                  },
-                  hover: {
-                    strokeOpacity: { value: 0.5 },
-                  },
-                },
-              },
-            ],
-          },
-        ],
-      };
-      vegaEmbed("#view", yourVlSpec);*/
-
-      // stacked bar chart
-      var barChart = {
-        "$schema": "https://vega.github.io/schema/vega/v5.json",
-        "description": "A basic stacked bar chart example.",
-        "width": 500,
-        "height": 200,
-        "padding": 5,
-
-        "data": [
-          {
-            "name": "table",
-            "values": tsvData,
-            "transform": [
-              {
-                "type": "stack",
-                "groupby": ["pos"],
-                "sort": { "field": "type" },
-                "field": "value"
-              }
-            ]
-          }
-        ],
-
-        "scales": [
-          {
-            "name": "x",
-            "type": "band",
-            "range": "width",
-            "domain": { "data": "table", "field": "pos" }
-          },
-          {
-            "name": "y",
-            "type": "linear",
-            "range": "height",
-            "nice": true, "zero": true,
-            "domain": { "data": "table", "field": "value" }
-          },
-          {
-            "name": "color",
-            "type": "ordinal",
-            "range": "category",
-            "domain": { "data": "table", "field": "type" }
-          }
-        ],
-
-        "axes": [
-          { "orient": "bottom", "scale": "x", "zindex": 1 },
-          { "orient": "left", "scale": "y", "zindex": 1 }
-        ],
-
-        "marks": [
-          {
-            "type": "rect",
-            "from": { "data": "table" },
-            "encode": {
-              "enter": {
-                "x": { "scale": "x", "field": "pos" },
-                "width": { "scale": "x", "band": 1, "offset": -1 },
-                "y": { "scale": "y", "field": "y0" },
-                "y2": { "scale": "y", "field": "y1" },
-                "fill": { "scale": "color", "field": "type" }
-              },
-              "update": {
-                "fillOpacity": { "value": 1 }
-              },
-              "hover": {
-                "fillOpacity": { "value": 0.5 }
-              }
-            }
-          }
-        ]
-      };
-
-      vegaEmbed("#view", barChart);
-    }
-
-    document.getElementById("loadGraph").addEventListener("click", (e) => {
-      let yAxisOption;
-      let graphTypeOption;
-
-      if (document.getElementById("count-option").checked) {
-        yAxisOption = COUNT;
-      } else if (document.getElementById("proportion-option").checked) {
-        yAxisOption = PROPORTION;
+      function removeTotals(data) {
+        return data.filter((e) => e.type !== 5);
       }
 
-      if (document.getElementById("curves-option").checked) {
-        graphTypeOption = CURVES;
-      } else if (document.getElementById("bars-option").checked) {
-        graphTypeOption = BARS;
-      }
+      document.getElementById("range-option").addEventListener("click", (e) => {
+        let rangeSelector = document.getElementById("range-selector");
 
-      loadGraph(yAxisOption, graphTypeOption);
-    });
-  </script>
-</body>
+        if (document.getElementById("limit-option").checked) {
+          rangeSelector.style.display = "block";
+          document.getElementById("lower-bound").value = 0;
+          document.getElementById("upper-bound").value =
+            tsvData.length / DATA_PER_POS;
+        } else {
+          rangeSelector.style.display = "none";
+        }
+      });
 
+      document.getElementById("loadGraph").addEventListener("click", (e) => {
+        let yAxisOption = COUNT;
+        let graphTypeOption = CURVES;
+
+        let lowerDataBound = BOUNDS.low;
+        let upperDataBound = BOUNDS.high;
+
+        // if (document.getElementById("count-option").checked) {
+        //   yAxisOption = COUNT;
+        // }
+        if (document.getElementById("proportion-option").checked) {
+          yAxisOption = PROPORTION;
+        }
+
+        // if (document.getElementById("curves-option").checked) {
+        //   graphTypeOption = CURVES;
+        // }
+        if (document.getElementById("bars-option").checked) {
+          graphTypeOption = BARS;
+          DATA_PER_POS = 5;
+        }
+
+        if (document.getElementById("limit-option").checked) {
+          lowerDataBound =
+            parseInt(document.getElementById("lower-bound").value) *
+            DATA_PER_POS;
+          upperDataBound =
+            parseInt(document.getElementById("upper-bound").value) *
+            DATA_PER_POS;
+        }
+
+        switch (graphTypeOption) {
+          case CURVES:
+            loadLineGraph(
+              tsvData.slice(
+                lowerDataBound * DATA_PER_POS,
+                upperDataBound * DATA_PER_POS
+              ),
+              yAxisOption
+            );
+          case BARS:
+            loadBarGraph(
+              tsvData
+                .filter((e) => e !== 5)
+                .slice(
+                  lowerDataBound * DATA_PER_POS,
+                  upperDataBound * DATA_PER_POS
+                ),
+              yAxisOption
+            );
+        }
+      });
+    </script>
+  </body>
 </html>
