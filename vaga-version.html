@@ -3,9 +3,9 @@
     <title>Niema Website</title>
     <style>
       body {
-        font-family: "Helvetica", "Arial", sans-serif;
+        font-family: 'Helvetica', 'Arial', sans-serif;
         color: #444444;
-        background-color: #fafafa;
+        background-color: hsl(0, 0%, 98%);
       }
 
       #layout {
@@ -22,6 +22,15 @@
         align-items: center;
         padding-left: 2vw;
         background-color: #eee;
+      }
+
+      #graph {
+        height: 100%;
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0vw 3vw;
       }
 
       #view {
@@ -79,10 +88,10 @@
           </form>
           <div id="range-selector">
             <span>Lower:</span>
-            <input type="text" id="lower-bound" />
+            <input type="number" id="lower-bound" min="0" max="0" />
             <br />
             <span>Upper:</span>
-            <input type="text" id="upper-bound" />
+            <input type="number" id="upper-bound" min="0" max="0" />
           </div>
           <br />
           <button id="loadGraph">Load Graph</button>
@@ -106,23 +115,24 @@
       let chart;
 
       function removeTotals(data) {
-        return data.filter((e) => e.type !== 5);
+        return data.filter((e) => e.type !== TYPE_CODES.TOTAL);
       }
 
-      document.getElementById("range-option").addEventListener("click", (e) => {
-        let rangeSelector = document.getElementById("range-selector");
+      document.getElementById('range-option').addEventListener('click', (e) => {
+        let rangeSelector = document.getElementById('range-selector');
 
-        if (document.getElementById("limit-option").checked) {
-          rangeSelector.style.display = "block";
-          document.getElementById("lower-bound").value = 0;
-          document.getElementById("upper-bound").value =
-            tsvData.length / DATA_PER_POS;
+        if (document.getElementById('limit-option').checked) {
+          rangeSelector.style.display = 'block';
+          document.getElementById('lower-bound').value = BOUNDS.low;
+          document.getElementById('upper-bound').value = BOUNDS.high;
+          document.getElementById('lower-bound').max = BOUNDS.high;
+          document.getElementById('upper-bound').max = BOUNDS.high;
         } else {
-          rangeSelector.style.display = "none";
+          rangeSelector.style.display = 'none';
         }
       });
 
-      document.getElementById("loadGraph").addEventListener("click", (e) => {
+      document.getElementById('loadGraph').addEventListener('click', (e) => {
         let yAxisOption = COUNT;
         let graphTypeOption = CURVES;
 
@@ -132,46 +142,43 @@
         // if (document.getElementById("count-option").checked) {
         //   yAxisOption = COUNT;
         // }
-        if (document.getElementById("proportion-option").checked) {
+        if (document.getElementById('proportion-option').checked) {
           yAxisOption = PROPORTION;
         }
 
         // if (document.getElementById("curves-option").checked) {
         //   graphTypeOption = CURVES;
         // }
-        if (document.getElementById("bars-option").checked) {
+        if (document.getElementById('bars-option').checked) {
           graphTypeOption = BARS;
           DATA_PER_POS = 5;
         }
 
-        if (document.getElementById("limit-option").checked) {
-          lowerDataBound =
-            parseInt(document.getElementById("lower-bound").value) *
-            DATA_PER_POS;
-          upperDataBound =
-            parseInt(document.getElementById("upper-bound").value) *
-            DATA_PER_POS;
+        if (document.getElementById('limit-option').checked) {
+          lowerDataBound = parseInt(
+            document.getElementById('lower-bound').value
+          );
+          upperDataBound = parseInt(
+            document.getElementById('upper-bound').value
+          );
         }
 
-        switch (graphTypeOption) {
-          case CURVES:
-            loadLineGraph(
-              tsvData.slice(
-                lowerDataBound * DATA_PER_POS,
-                upperDataBound * DATA_PER_POS
-              ),
-              yAxisOption
-            );
-          case BARS:
-            loadBarGraph(
-              tsvData
-                .filter((e) => e !== 5)
-                .slice(
-                  lowerDataBound * DATA_PER_POS,
-                  upperDataBound * DATA_PER_POS
-                ),
-              yAxisOption
-            );
+        if (graphTypeOption === CURVES) {
+          loadLineGraph(
+            tsvData.slice(
+              lowerDataBound * DATA_PER_POS,
+              upperDataBound * DATA_PER_POS
+            ),
+            yAxisOption
+          );
+        } else if (graphTypeOption === BARS) {
+          loadBarGraph(
+            removeTotals(tsvData).slice(
+              lowerDataBound * DATA_PER_POS,
+              upperDataBound * DATA_PER_POS
+            ),
+            yAxisOption
+          );
         }
       });
     </script>

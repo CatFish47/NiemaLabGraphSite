@@ -1,7 +1,5 @@
 // TODO: with super large TSV files it might not finish loading before the graph is generated oops pls fix
 
-const { TYPES } = require("vega-lite/build/src/type");
-
 const tsvData = []
 
 async function tsvToArr(filename) {
@@ -33,10 +31,10 @@ async function tsvToArr(filename) {
         });
         tsvData.push({
             value: parseInt(data.A) + parseInt(data.G) + parseInt(data.C) + parseInt(data.T),
-            type: TYPES.TOTAL,
+            type: TYPE_CODES.TOTAL,
             pos: parseInt(data.Pos),
         });
-        BOUNDS.high += DATA_PER_POS;
+        BOUNDS.high++;
     });
 }
 
