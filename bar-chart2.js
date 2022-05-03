@@ -30,6 +30,16 @@ function loadBarGraph(data, yAxisData) {
             }
         ],
 
+        // "signals": [
+        //     {
+        //       "name": "hover",
+        //       "value": null,
+        //       "on": [
+        //         {"events": "@points_voronoi:mouseover", "update": "datum"},
+        //         {"events": "@points_voronoi:mouseout", "update": "null"}
+        //       ]
+        //     }
+        //   ],
         "signals": [
             {
               "name": "tooltip",
@@ -73,6 +83,24 @@ function loadBarGraph(data, yAxisData) {
             {
                 type: 'rect',
                 from: { data: 'table' },
+                "marks": [
+                    {
+                        "encode": {
+                            "update": {
+                                x: { scale: 'x', field: 'pos' },
+                                width: { scale: 'x', band: 1, offset: -1 },
+                                y: { scale: 'y', field: 'y0' },
+                                y2: { scale: 'y', field: 'y1' },
+                                fill: { scale: 'color', field: 'type' }
+                            }
+                        },
+                        "from": {"data": "table"},
+                        "type": "rect"
+                    },
+                    {
+                        
+                    }
+                ]
                 encode: {
                     enter: {
                         x: { scale: 'x', field: 'pos' },
