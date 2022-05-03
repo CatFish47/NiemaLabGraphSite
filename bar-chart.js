@@ -30,16 +30,16 @@ function loadBarGraph(data, yAxisData) {
             }
         ],
 
-        "signals": [
-            {
-              "name": "tooltip",
-              "value": {},
-              "on": [
-                {"events": "rect:mouseover", "update": "datum"},
-                {"events": "rect:mouseout",  "update": "{}"}
-              ]
-            }
-          ],
+        // "signals": [
+        //     {
+        //       "name": "tooltip",
+        //       "value": {},
+        //       "on": [
+        //         {"events": "rect:mouseover", "update": "datum"},
+        //         {"events": "rect:mouseout",  "update": "{}"}
+        //       ]
+        //     }
+        //   ],
 
         scales: [
             {
@@ -79,7 +79,12 @@ function loadBarGraph(data, yAxisData) {
                         width: { scale: 'x', band: 1, offset: -1 },
                         y: { scale: 'y', field: 'y0' },
                         y2: { scale: 'y', field: 'y1' },
-                        fill: { scale: 'color', field: 'type' }
+                        fill: { scale: 'color', field: 'type' },
+                        tooltip: 
+                            {
+                                "signal": "{'Hello': datum.value}"
+                                // "signal" : "datum.value"
+                            }
                     },
                     update: {
                         fillOpacity: { value: 1 }
@@ -89,25 +94,25 @@ function loadBarGraph(data, yAxisData) {
                     }
                 }
             },
-            {
-                "type": "text",
-                "encode": {
-                  "enter": {
-                    "align": {"value": "center"},
-                    "baseline": {"value": "bottom"},
-                    "fill": {"value": "#333"}
-                  },
-                  "update": {
-                    "x": {"scale": "x", "signal": "tooltip.pos", "band": 0.5},
-                    "y": {"scale": "y", "signal": "tooltip.value", "offset": -2},
-                    "text": {"signal": ("tooltip.value" + " Hello")},
-                    "fillOpacity": [
-                      {"test": "datum === tooltip", "value": 0},
-                      {"value": 1}
-                    ]
-                  }
-                }
-              }
+            // {
+            //     "type": "text",
+            //     "encode": {
+            //       "enter": {
+            //         "align": {"value": "center"},
+            //         "baseline": {"value": "bottom"},
+            //         "fill": {"value": "#333"}
+            //       },
+            //       "update": {
+            //         "x": {"scale": "x", "signal": "tooltip.pos", "band": 0.5},
+            //         "y": {"scale": "y", "signal": "tooltip.value", "offset": -2},
+            //         "text": {"signal": ("tooltip.value" + " Hello")},
+            //         "fillOpacity": [
+            //           {"test": "datum === tooltip", "value": 0},
+            //           {"value": 1}
+            //         ]
+            //       }
+            //     }
+            //   }
         ],
 
         // encoding: {
