@@ -36,17 +36,6 @@ function loadBarGraph(data, yAxisData) {
             }
         ],
 
-        // "signals": [
-        //     {
-        //       "name": "tooltip",
-        //       "value": {},
-        //       "on": [
-        //         {"events": "rect:mouseover", "update": "datum"},
-        //         {"events": "rect:mouseout",  "update": "{}"}
-        //       ]
-        //     }
-        //   ],
-
         scales: [
             {
                 name: 'x',
@@ -106,7 +95,8 @@ function loadBarGraph(data, yAxisData) {
                         fill: { scale: 'color', field: 'type' },
                         tooltip: 
                             {
-                                "signal": "{'Hello': datum.value}"
+                                "signal": "{'Pos': datum.pos, 'Value': datum.value}"
+                                // "signal": "{'Pos': datum.pos}"
                                 // "signal" : "datum.value"
                             }
                     },
@@ -117,34 +107,8 @@ function loadBarGraph(data, yAxisData) {
                         fillOpacity: { value: 0.5 }
                     }
                 }
-            },
-            // {
-            //     "type": "text",
-            //     "encode": {
-            //       "enter": {
-            //         "align": {"value": "center"},
-            //         "baseline": {"value": "bottom"},
-            //         "fill": {"value": "#333"}
-            //       },
-            //       "update": {
-            //         "x": {"scale": "x", "signal": "tooltip.pos", "band": 0.5},
-            //         "y": {"scale": "y", "signal": "tooltip.value", "offset": -2},
-            //         "text": {"signal": ("tooltip.value" + " Hello")},
-            //         "fillOpacity": [
-            //           {"test": "datum === tooltip", "value": 0},
-            //           {"value": 1}
-            //         ]
-            //       }
-            //     }
-            //   }
-        ],
-
-        // encoding: {
-        //     tooltip:  {
-        //         "field": "A",
-        //         "type": "quantitative"
-        //     }
-        // }
+            }
+        ]
     };
 
     vegaEmbed('#view', barChart, {tooltip: {theme: 'dark'}});
