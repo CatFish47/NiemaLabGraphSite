@@ -1,5 +1,3 @@
-const { TOOLTIP } = require("vega-lite/build/src/channel");
-
 function loadBarGraph(data, yAxisData) {
     let viewElement = document.getElementById("view");
     let width = 2 * viewElement.offsetWidth / 3;
@@ -78,8 +76,8 @@ function loadBarGraph(data, yAxisData) {
         ],
 
         axes: [
-            { orient: 'bottom', scale: 'x', zindex: 1, tickCount: 10 },
-            { orient: 'left', scale: 'y', zindex: 1 }
+            { orient: 'bottom', scale: 'x', zindex: 1, labelOverlap: "parity" },
+            { orient: 'left', scale: 'y', zindex: 1, labelOverlap: "greedy" }
         ],
 
         marks: [
@@ -93,12 +91,12 @@ function loadBarGraph(data, yAxisData) {
                         y: { scale: 'y', field: 'y0' },
                         y2: { scale: 'y', field: 'y1' },
                         fill: { scale: 'color', field: 'type' },
-                        tooltip: 
-                            {
-                                "signal": "{'Pos': datum.pos, 'Value': datum.value}"
-                                // "signal": "{'Pos': datum.pos}"
-                                // "signal" : "datum.value"
-                            }
+                        tooltip:
+                        {
+                            "signal": "{'Pos': datum.pos, 'Value': datum.value}"
+                            // "signal": "{'Pos': datum.pos}"
+                            // "signal" : "datum.value"
+                        }
                     },
                     update: {
                         fillOpacity: { value: 1 }
@@ -111,5 +109,5 @@ function loadBarGraph(data, yAxisData) {
         ]
     };
 
-    vegaEmbed('#view', barChart, {tooltip: {theme: 'dark'}});
+    vegaEmbed('#view', barChart, { tooltip: { theme: 'dark' } });
 }
