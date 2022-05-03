@@ -4,8 +4,13 @@ function loadBarGraph(data, yAxisData) {
     let viewElement = document.getElementById("view");
     let width = 2 * viewElement.offsetWidth / 3;
     let height = viewElement.offsetHeight / 2;
+    let yscale;
 
-    console.log("test")
+    if (yAxisData == LOG) {
+        yscale = "symlog";
+    } else {
+        yscale = "linear";
+    }
 
     // stacked bar chart
     var barChart = {
@@ -24,7 +29,8 @@ function loadBarGraph(data, yAxisData) {
                         type: 'stack',
                         groupby: ['pos'],
                         sort: { field: 'type' },
-                        field: 'value'
+                        field: 'value',
+                        sort: { field: 'value', order: "ascending" }
                     }
                 ]
             }
@@ -50,7 +56,7 @@ function loadBarGraph(data, yAxisData) {
             },
             {
                 name: 'y',
-                type: 'linear',
+                type: yscale,
                 range: 'height',
                 nice: true,
                 zero: true,
@@ -61,6 +67,24 @@ function loadBarGraph(data, yAxisData) {
                 type: 'ordinal',
                 range: 'category',
                 domain: { data: 'table', field: 'type' }
+            }
+        ],
+
+        legends: [
+            {
+                fill: 'color',
+                orient: 'right',
+                title: 'Codes',
+                format: '',
+                encode: {
+                    symbols: {
+                        update: {
+                            shape: { value: 'square' },
+                            stroke: { value: '#ccc' },
+                            strokeWidth: { value: 0.2 }
+                        }
+                    }
+                }
             }
         ],
 

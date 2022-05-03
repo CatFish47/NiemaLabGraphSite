@@ -1,39 +1,77 @@
 // TODO: with super large TSV files it might not finish loading before the graph is generated oops pls fix
 
-const tsvData = []
+const tsvDataCount = [];
+const tsvDataProp = [];
 
 async function tsvToArr(filename) {
     await d3.tsv(filename, function (data) {
-        tsvData.push({
+        const total = parseInt(data.A) + parseInt(data.G) + parseInt(data.C) + parseInt(data.T) + parseInt(data.Other) || 1;
+
+        // Count Data
+        tsvDataCount.push({
             value: parseInt(data.A),
-            type: TYPE_CODES.A,
+            type: "A",
             pos: parseInt(data.Pos),
         });
-        tsvData.push({
-            value: parseInt(data.G),
-            type: TYPE_CODES.B,
-            pos: parseInt(data.Pos),
-        });
-        tsvData.push({
+        tsvDataCount.push({
             value: parseInt(data.C),
-            type: TYPE_CODES.C,
+            type: "C",
             pos: parseInt(data.Pos),
         });
-        tsvData.push({
+        tsvDataCount.push({
+            value: parseInt(data.G),
+            type: "G",
+            pos: parseInt(data.Pos),
+        });
+        tsvDataCount.push({
             value: parseInt(data.T),
-            type: TYPE_CODES.T,
+            type: "T",
             pos: parseInt(data.Pos),
         });
-        tsvData.push({
+        tsvDataCount.push({
             value: parseInt(data.Other),
-            type: TYPE_CODES.OTHER,
+            type: "Other",
             pos: parseInt(data.Pos),
         });
-        tsvData.push({
-            value: parseInt(data.A) + parseInt(data.G) + parseInt(data.C) + parseInt(data.T),
-            type: TYPE_CODES.TOTAL,
+        // tsvDataCount.push({
+        //     value: total,
+        //     type: TYPE_CODES.TOTAL,
+        //     pos: parseInt(data.Pos),
+        // });
+
+        // Proportion Data
+        tsvDataProp.push({
+            value: parseInt(data.A) / total,
+            type: "A",
+            // type: TYPE_CODES.A,
             pos: parseInt(data.Pos),
         });
+        tsvDataProp.push({
+            value: parseInt(data.C) / total,
+            type: "C",
+            pos: parseInt(data.Pos),
+        });
+        tsvDataProp.push({
+            value: parseInt(data.G) / total,
+            type: "G",
+            pos: parseInt(data.Pos),
+        });
+        tsvDataProp.push({
+            value: parseInt(data.T) / total,
+            type: "T",
+            pos: parseInt(data.Pos),
+        });
+        tsvDataProp.push({
+            value: parseInt(data.Other) / total,
+            type: "Other",
+            pos: parseInt(data.Pos),
+        });
+        // tsvDataProp.push({
+        //     value: total,
+        //     type: TYPE_CODES.TOTAL,
+        //     pos: parseInt(data.Pos),
+        // });
+
         BOUNDS.high++;
     });
 }
