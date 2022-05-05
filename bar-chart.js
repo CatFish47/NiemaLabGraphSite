@@ -10,6 +10,13 @@ function loadBarGraph(data, yAxisData) {
         yscale = "linear";
     }
 
+    let label = 'default';
+    if (yAxisData == PROPORTION) {
+        label = 'Proportion';
+    } else {
+        label = 'Count';
+    }
+
     // stacked bar chart
     var barChart = {
         $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -93,9 +100,7 @@ function loadBarGraph(data, yAxisData) {
                         fill: { scale: 'color', field: 'type' },
                         tooltip:
                         {
-                            "signal": "{'Pos': datum.pos, 'Value': datum.value}"
-                            // "signal": "{'Pos': datum.pos}"
-                            // "signal" : "datum.value"
+                            "signal": `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value}`
                         }
                     },
                     update: {
@@ -109,5 +114,21 @@ function loadBarGraph(data, yAxisData) {
         ]
     };
 
-    vegaEmbed('#view', barChart, { tooltip: { theme: 'dark' } });
+    /*var tooltipOptions = {
+        formatTooltip: (value, sanitize) => {
+            if (yAxisData == COUNT) {
+                return `hi there`;
+            }
+            console.log(value);
+            // return `Pos: ${sanitize(value)}.`
+            var str = "Letter: " + value["type"] + "\n" + 
+                    "Position: " + value["pos"] + "\n" +
+                        "";
+            console.log(str);
+            return ["Letter: " + value["type"], "Position: " + value["pos"]];
+        }
+      };*/
+
+    // vegaEmbed('#view', barChart, { tooltip: tooltipOptions });
+    vegaEmbed('#view', barChart);
 }
