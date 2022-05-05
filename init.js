@@ -7,7 +7,7 @@ const PROPORTION = "proportion";
 // const CURVES = "curves";
 const BOUNDS = {
     low: 0,
-    high: 0,
+    high: -1,
 };
 // const TYPE_CODES = {
 //     A: 0,
@@ -17,3 +17,4 @@ const BOUNDS = {
 //     OTHER: 4,
 //     TOTAL: 5,
 // };
+let tsvString;

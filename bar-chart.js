@@ -59,8 +59,9 @@ function loadBarGraph(data, yAxisData) {
             {
                 name: 'color',
                 type: 'ordinal',
-                range: 'category',
-                domain: { data: 'table', field: 'type' }
+                // range: 'category',
+                range: { scheme: "strands" },
+                domain: { data: 'table', field: 'type' },
             }
         ],
 

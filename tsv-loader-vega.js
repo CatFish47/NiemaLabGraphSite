@@ -1,10 +1,15 @@
 // TODO: with super large TSV files it might not finish loading before the graph is generated oops pls fix
 
-const tsvDataCount = [];
-const tsvDataProp = [];
+let tsvDataCount = [];
+let tsvDataProp = [];
 
-async function tsvToArr(filename) {
-    await d3.tsv(filename, function (data) {
+async function tsvToArr(tsvData) {
+    tsvDataCount = [];
+    tsvDataProp = [];
+    BOUNDS.low = 0;
+    BOUNDS.high = -1;
+
+    await d3.tsvParse(tsvData, function (data) {
         const total = parseInt(data.A) + parseInt(data.G) + parseInt(data.C) + parseInt(data.T) + parseInt(data.Other) || 1;
 
         // Count Data
@@ -74,6 +79,11 @@ async function tsvToArr(filename) {
 
         BOUNDS.high++;
     });
+
+    document.getElementById('lower-bound').value = BOUNDS.low;
+    document.getElementById('upper-bound').value = BOUNDS.high;
+    document.getElementById('lower-bound').max = BOUNDS.high;
+    document.getElementById('upper-bound').max = BOUNDS.high;
 }
 
-tsvToArr("https://raw.githubusercontent.com/niemasd/PRJCA008874-Analysis/main/data/sambamviz/SAMC703641.03.sambamviz.out/nuc_count_NC_045512.2.tsv");
+// tsvToArr("https://raw.githubusercontent.com/niemasd/PRJCA008874-Analysis/main/data/sambamviz/SAMC703641.03.sambamviz.out/nuc_count_NC_045512.2.tsv");
