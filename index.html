@@ -42,9 +42,10 @@
         justify-content: center;
         padding: 0vw 3vw;
       }
-      .color-picker {
-        display: flex;
-        justify-content: space-between;
+
+      #color-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
       }
     </style>
   </head>
@@ -56,26 +57,44 @@
           <label>Upload SamBamViz File:</label>
           <input type="file" id="sambamviz-upload" />
           <h3>Color Picker</h3>
-          <div class="color-picker">
+          <div id="color-grid">
             <label>A</label>
-            <input type="color" value="#65F73E" />
-          </div>
-          <div class="color-picker">
+            <input
+              class="color-picker"
+              id="a-color"
+              type="color"
+              value="#65F73E"
+            />
             <label>C</label>
-            <input type="color" value="#FFB340" />
-          </div>
-          <div class="color-picker">
+            <input
+              class="color-picker"
+              id="c-color"
+              type="color"
+              value="#FFB340"
+            />
             <label>G</label>
-            <input type="color" value="#EB413C" />
-          </div>
-          <div class="color-picker">
+            <input
+              class="color-picker"
+              id="g-color"
+              type="color"
+              value="#EB413C"
+            />
             <label>T</label>
-            <input type="color" value="#3C89EE" />
-          </div>
-          <div class="color-picker">
+            <input
+              class="color-picker"
+              id="t-color"
+              type="color"
+              value="#3C89EE"
+            />
             <label>Other</label>
-            <input type="color" value="#000000" />
+            <input
+              class="color-picker"
+              id="n-color"
+              type="color"
+              value="#000000"
+            />
           </div>
+
           <h3>Y-Axis Options</h3>
           <form>
             <input type="radio" id="count-option" name="yaxis" checked="true" />
@@ -143,6 +162,14 @@
         });
       }
 
+      function setVegaScheme() {
+        COLORS.A = document.getElementById('a-color').value;
+        COLORS.C = document.getElementById('c-color').value;
+        COLORS.G = document.getElementById('g-color').value;
+        COLORS.T = document.getElementById('t-color').value;
+        COLORS.N = document.getElementById('n-color').value;
+      }
+
       // document.getElementById('range-option').addEventListener('click', (e) => {
       //   let rangeSelector = document.getElementById('range-selector');
 
@@ -155,6 +182,12 @@
       //     rangeSelector.style.display = 'none';
       //   }
       // });
+
+      document.querySelectorAll('.color-picker').forEach((input) => {
+        input.addEventListener('change', (e) => {
+          setVegaScheme();
+        });
+      });
 
       document.getElementById('loadGraph').addEventListener('click', (e) => {
         let yAxisOption = COUNT;
@@ -186,11 +219,11 @@
         // }
 
         vega.scheme('strands', [
-          '#65F73E',
-          '#FFB340',
-          '#EB413C',
-          '#3C89EE',
-          '#000000'
+          COLORS.A,
+          COLORS.C,
+          COLORS.G,
+          COLORS.T,
+          COLORS.N
         ]);
 
         if (yAxisOption == COUNT) {
