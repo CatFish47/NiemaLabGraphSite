@@ -28,3 +28,5 @@ const COLORS = {
 // };
 let tsvString;
 let genSeq = [];
+let tsvDataCount = [];
+let tsvDataProp = [];

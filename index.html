@@ -60,8 +60,8 @@
           <br />
           <label>Upload FASTA File:</label>
           <input type="file" id="fasta-upload" />
-          <!-- <br /><br />
-          <button id="upload-files">Upload Files</button> -->
+          <br /><br />
+          <button id="upload-files">Upload Files</button>
           <h3>Color Picker</h3>
           <div id="color-grid">
             <label>A</label>
@@ -142,9 +142,9 @@
     <script src="bar-chart.js"></script>
 
     <script type="text/javascript">
-      // document.getElementById('upload-files').addEventListener('click', (e) => {
-      //   processFiles();
-      // });
+      document.getElementById('upload-files').addEventListener('click', (e) => {
+        generateData();
+      });
 
       document
         .getElementById('sambamviz-upload')
@@ -158,13 +158,20 @@
           processFiles(FAS);
         });
 
+      async function generateData() {
+        try {
+          await tsvToArr(tsvString);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
       async function processFiles(fileType) {
         try {
           if (fileType === SBV) {
             const sbvFile =
               document.getElementById('sambamviz-upload').files[0];
             await processSamBamViz(sbvFile);
-            await tsvToArr(tsvString);
           }
 
           if (fileType === FAS) {
@@ -194,6 +201,7 @@
           let reader = new FileReader();
 
           reader.onload = () => {
+            genSeq = [];
             let genSeqStr = reader.result;
             for (
               let i = genSeqStr.indexOf('\n') + 1;

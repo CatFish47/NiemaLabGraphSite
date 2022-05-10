@@ -16,11 +16,11 @@ function loadBarGraph(data, yAxisData) {
     } else {
         label = 'Count';
     }
-    
-    let hasGenSeq = true; // add parameter 
-    let tooltipDisplay = hasGenSeq ? 
+
+    let hasGenSeq = genSeq.length > 0; // add parameter 
+    let tooltipDisplay = hasGenSeq ?
         // `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value, 'Reference': datum.ref}` : 
-        `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value, 'Reference': 'hi'}` : 
+        `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value, 'Reference': datum.ref}` :
         `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value}`;
     // let tooltipDisplay = `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value}`;
 
