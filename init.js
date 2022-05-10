@@ -25,3 +25,4 @@ const COLORS = {
 //     TOTAL: 5,
 // };
 let tsvString;
+let genSeq = [];
