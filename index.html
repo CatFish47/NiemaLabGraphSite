@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Niema Website</title>
+    <title>SamBamViz VIZualizer</title>
     <style>
       body {
         font-family: 'Helvetica', 'Arial', sans-serif;
@@ -87,32 +87,7 @@
             <input type="radio" id="proportion-option" name="yaxis" />
             <label for="proportion-option">Proportion</label>
           </form>
-          <!-- <h3>Graph Type</h3>
-          <form>
-            <input
-              type="radio"
-              id="curves-option"
-              name="graphtype"
-              checked="true"
-            />
-            <label for="curves-option">Curves</label>
-            <br />
-            <input type="radio" id="bars-option" name="graphtype" />
-            <label for="bars-option">Bars</label>
-          </form> -->
           <h3>Range of Data</h3>
-          <!-- <form id="range-option">
-            <input
-              type="radio"
-              id="all-option"
-              name="datarange"
-              checked="true"
-            />
-            <label for="all-option">All Data</label>
-            <br />
-            <input type="radio" id="limit-option" name="datarange" />
-            <label for="limit-option">Limit Data</label>
-          </form> -->
           <div id="range-selector">
             <span>Lower:</span>
             <input type="number" id="lower-bound" min="0" max="0" />
@@ -137,6 +112,7 @@
     <script src="tsv-loader-vega.js"></script>
     <script src="line-graph.js"></script>
     <script src="bar-chart.js"></script>
+
     <script type="text/javascript">
       document
         .getElementById('sambamviz-upload')
@@ -147,9 +123,7 @@
       async function processFiles() {
         try {
           const file = document.getElementById('sambamviz-upload').files[0];
-
           await processSamBamViz(file);
-
           await tsvToArr(tsvString);
         } catch (error) {
           console.log(error);
