@@ -60,8 +60,8 @@
           <br />
           <label>Upload FASTA File:</label>
           <input type="file" id="fasta-upload" />
-          <br /><br />
-          <button id="upload-files">Upload Files</button>
+          <!-- <br /><br />
+          <button id="upload-files">Upload Files</button> -->
           <h3>Color Picker</h3>
           <div id="color-grid">
             <label>A</label>
@@ -142,15 +142,35 @@
     <script src="bar-chart.js"></script>
 
     <script type="text/javascript">
-      document.getElementById('upload-files').addEventListener('click', (e) => {
-        processFiles();
-      });
+      // document.getElementById('upload-files').addEventListener('click', (e) => {
+      //   processFiles();
+      // });
 
-      async function processFiles() {
+      document
+        .getElementById('sambamviz-upload')
+        .addEventListener('change', (e) => {
+          processFiles(SBV);
+        });
+
+      document
+        .getElementById('fasta-upload')
+        .addEventListener('change', (e) => {
+          processFiles(FAS);
+        });
+
+      async function processFiles(fileType) {
         try {
-          const file = document.getElementById('sambamviz-upload').files[0];
-          await processSamBamViz(file);
-          await tsvToArr(tsvString);
+          if (fileType === SBV) {
+            const sbvFile =
+              document.getElementById('sambamviz-upload').files[0];
+            await processSamBamViz(sbvFile);
+            await tsvToArr(tsvString);
+          }
+
+          if (fileType === FAS) {
+            const fasFile = document.getElementById('fasta-upload').files[0];
+            await processFasta(fasFile);
+          }
         } catch (error) {
           console.log(error);
         }
@@ -174,9 +194,17 @@
           let reader = new FileReader();
 
           reader.onload = () => {
-            // for (let c of reader.result) {
-            //   genSeq.push(c);
-            // }
+            let genSeqStr = reader.result;
+            for (
+              let i = genSeqStr.indexOf('\n') + 1;
+              i < genSeqStr.length;
+              i++
+            ) {
+              if (genSeqStr[i] != '\n') {
+                genSeq.push(genSeqStr[i]);
+              }
+            }
+            resolve('done');
           };
 
           reader.readAsText(file);
