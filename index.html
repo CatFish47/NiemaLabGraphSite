@@ -9,24 +9,24 @@
       }
 
       #layout {
-        display: flex;
+        display: grid;
+        grid-template-columns: 20% 80%;
         width: 100%;
         height: 100%;
       }
 
       #options {
         height: 100%;
-        width: 20%;
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding-left: 2vw;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 2vw;
         background-color: #eee;
+        font-size: 0.8em;
       }
 
       #graph {
         height: 100%;
-        width: 80%;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -45,99 +45,103 @@
 
       #color-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        text-align: right;
+      }
+
+      #color-grid > label {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: auto;
+        margin-bottom: auto;
       }
     </style>
   </head>
   <body>
     <div id="layout">
       <div id="options">
-        <div>
-          <h3>File Upload</h3>
-          <label>Select SamBamViz File:</label>
-          <input type="file" id="sambamviz-upload" />
-          <br />
-          <br />
-          <label>Select FASTA File: (optional)</label>
-          <input type="file" id="fasta-upload" />
-          <br /><br />
-          <button id="upload-files">Load Files</button>
-          <h3>Color Picker</h3>
-          <div id="color-grid">
-            <label>A</label>
-            <input
-              class="color-picker"
-              id="a-color"
-              type="color"
-              value="#65F73E"
-            />
-            <label>C</label>
-            <input
-              class="color-picker"
-              id="c-color"
-              type="color"
-              value="#FFB340"
-            />
-            <label>G</label>
-            <input
-              class="color-picker"
-              id="g-color"
-              type="color"
-              value="#EB413C"
-            />
-            <label>T</label>
-            <input
-              class="color-picker"
-              id="t-color"
-              type="color"
-              value="#3C89EE"
-            />
-            <label>Other</label>
-            <input
-              class="color-picker"
-              id="n-color"
-              type="color"
-              value="#000000"
-            />
-          </div>
-
-          <h3>Y-Axis Options</h3>
-          <form>
-            <input type="radio" id="count-option" name="yaxis" checked="true" />
-            <label for="count-option">Count (Linear Scale)</label>
-            <br />
-            <input type="radio" id="log-option" name="yaxis" />
-            <label for="log-option">Count (Log Scale)</label>
-            <br />
-            <input type="radio" id="proportion-option" name="yaxis" />
-            <label for="proportion-option">Proportion</label>
-          </form>
-          <h3>Range of Data</h3>
-          <div id="range-selector">
-            <span>Lower:</span>
-            <input type="number" id="lower-bound" min="0" max="0" />
-            <br />
-            <span>Upper:</span>
-            <input type="number" id="upper-bound" min="0" max="0" />
-          </div>
-          <br />
-          <button id="loadGraph">Update</button>
+        <h1>SamBamViz</h1>
+        <h3>File Upload</h3>
+        <label>Upload SamBamViz File:</label>
+        <input type="file" id="sambamviz-upload" />
+        <br />
+        <br />
+        <label>Upload FASTA File:</label>
+        <input type="file" id="fasta-upload" />
+        <br /><br />
+        <button id="upload-files">Upload Files</button>
+        <h3>Color Picker</h3>
+        <div id="color-grid">
+          <label>A</label>
+          <input
+            class="color-picker"
+            id="a-color"
+            type="color"
+            value="#65F73E"
+          />
+          <label>C</label>
+          <input
+            class="color-picker"
+            id="c-color"
+            type="color"
+            value="#FFB340"
+          />
+          <label>G</label>
+          <input
+            class="color-picker"
+            id="g-color"
+            type="color"
+            value="#EB413C"
+          />
+          <label>T</label>
+          <input
+            class="color-picker"
+            id="t-color"
+            type="color"
+            value="#3C89EE"
+          />
+          <label>Other</label>
+          <input
+            class="color-picker"
+            id="n-color"
+            type="color"
+            value="#000000"
+          />
         </div>
+
+        <h3>Y-Axis Options</h3>
+        <form>
+          <input type="radio" id="count-option" name="yaxis" checked="true" />
+          <label for="count-option">Count (Linear Scale)</label>
+          <br />
+          <input type="radio" id="log-option" name="yaxis" />
+          <label for="log-option">Count (Log Scale)</label>
+          <br />
+          <input type="radio" id="proportion-option" name="yaxis" />
+          <label for="proportion-option">Proportion</label>
+        </form>
+        <h3>Range of Data</h3>
+        <div id="range-selector">
+          <span>Lower:</span>
+          <input type="number" id="lower-bound" min="0" max="0" />
+          <br />
+          <span>Upper:</span>
+          <input type="number" id="upper-bound" min="0" max="0" />
+        </div>
+        <br />
+        <button id="loadGraph">Load SamBamViz</button>
       </div>
       <div id="graph">
         <div id="view"></div>
       </div>
     </div>
 
-    <script src="init.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    <!-- <script src="d3.v7.min.js"></script>
-    <script src="vega-embed@6.js"></script>
+    <script src="d3.v7.min.js"></script>
+    <script src="vega@5.js"></script>
     <script src="vega-lite@5.js"></script>
-    <script src="vega@5.js"></script> -->
+    <script src="vega-embed@6.js"></script>
+
+    <script src="init.js"></script>
     <script src="tsv-loader-vega.js"></script>
     <script src="bar-chart.js"></script>
 
@@ -252,17 +256,29 @@
         );
 
         if (document.getElementById('count-option').checked) {
-          loadBarGraph(tsvData.slice(
+          loadBarGraph(
+            tsvData.slice(
               lowerDataBound * DATA_PER_POS,
-              upperDataBound * DATA_PER_POS), COUNT);
+              upperDataBound * DATA_PER_POS
+            ),
+            COUNT
+          );
         } else if (document.getElementById('log-option').checked) {
-          loadBarGraph(tsvData.slice(
+          loadBarGraph(
+            tsvData.slice(
               lowerDataBound * DATA_PER_POS,
-              upperDataBound * DATA_PER_POS), LOG);
+              upperDataBound * DATA_PER_POS
+            ),
+            LOG
+          );
         } else if (document.getElementById('proportion-option').checked) {
-          loadBarGraph(tsvDataProp.slice(
+          loadBarGraph(
+            tsvDataProp.slice(
               lowerDataBound * DATA_PER_POS,
-              upperDataBound * DATA_PER_POS), PROPORTION);
+              upperDataBound * DATA_PER_POS
+            ),
+            PROPORTION
+          );
         }
       }
 
@@ -279,7 +295,7 @@
         // } else if (document.getElementById('proportion-option').checked) {
         //   yAxisOption = PROPORTION;
         // }
-        
+
         lowerDataBound = parseInt(document.getElementById('lower-bound').value);
         upperDataBound =
           parseInt(document.getElementById('upper-bound').value) + 1;
