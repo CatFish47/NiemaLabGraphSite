@@ -54,14 +54,14 @@
       <div id="options">
         <div>
           <h3>File Upload</h3>
-          <label>Upload SamBamViz File:</label>
+          <label>Select SamBamViz File:</label>
           <input type="file" id="sambamviz-upload" />
           <br />
           <br />
-          <label>Upload FASTA File:</label>
+          <label>Select FASTA File: (optional)</label>
           <input type="file" id="fasta-upload" />
           <br /><br />
-          <button id="upload-files">Upload Files</button>
+          <button id="upload-files">Load Files</button>
           <h3>Color Picker</h3>
           <div id="color-grid">
             <label>A</label>
@@ -121,7 +121,7 @@
             <input type="number" id="upper-bound" min="0" max="0" />
           </div>
           <br />
-          <button id="loadGraph">Load SamBamViz</button>
+          <button id="loadGraph">Update</button>
         </div>
       </div>
       <div id="graph">
@@ -144,6 +144,10 @@
     <script type="text/javascript">
       document.getElementById('upload-files').addEventListener('click', (e) => {
         generateData();
+
+        let lowerDataBound = BOUNDS.low;
+        let upperDataBound = BOUNDS.high;
+        loadSBV(lowerDataBound, upperDataBound, tsvDataCount, tsvDataProp);
       });
 
       document
@@ -227,54 +231,13 @@
         COLORS.N = document.getElementById('n-color').value;
       }
 
-      // document.getElementById('range-option').addEventListener('click', (e) => {
-      //   let rangeSelector = document.getElementById('range-selector');
-
-      //   if (document.getElementById('limit-option').checked) {
-      //     document.getElementById('lower-bound').value = BOUNDS.low;
-      //     document.getElementById('upper-bound').value = BOUNDS.high;
-      //     document.getElementById('lower-bound').max = BOUNDS.high;
-      //     document.getElementById('upper-bound').max = BOUNDS.high;
-      //   } else {
-      //     rangeSelector.style.display = 'none';
-      //   }
-      // });
-
       document.querySelectorAll('.color-picker').forEach((input) => {
         input.addEventListener('change', (e) => {
           setVegaScheme();
         });
       });
 
-      document.getElementById('loadGraph').addEventListener('click', (e) => {
-        let yAxisOption = COUNT;
-        // let graphTypeOption = BARS;
-
-        let lowerDataBound = BOUNDS.low;
-        let upperDataBound = BOUNDS.high;
-
-        if (document.getElementById('count-option').checked) {
-          yAxisOption = COUNT;
-        } else if (document.getElementById('log-option').checked) {
-          yAxisOption = LOG;
-        } else if (document.getElementById('proportion-option').checked) {
-          yAxisOption = PROPORTION;
-        }
-
-        // if (document.getElementById("curves-option").checked) {
-        //   graphTypeOption = CURVES;
-        // }
-        // if (document.getElementById('bars-option').checked) {
-        //   graphTypeOption = BARS;
-        //   DATA_PER_POS = 5;
-        // }
-
-        // if (document.getElementById('limit-option').checked) {
-        lowerDataBound = parseInt(document.getElementById('lower-bound').value);
-        upperDataBound =
-          parseInt(document.getElementById('upper-bound').value) + 1;
-        // }
-
+      function loadSBV(lowerDataBound, upperDataBound, tsvData, tsvDataProp) {
         vega.scheme('strands', [
           COLORS.A,
           COLORS.C,
@@ -283,31 +246,80 @@
           COLORS.N
         ]);
 
-        if (yAxisOption == COUNT) {
-          loadBarGraph(
-            tsvDataCount.slice(
+        let data = tsvData.slice(
+          lowerDataBound * DATA_PER_POS,
+          upperDataBound * DATA_PER_POS
+        );
+
+        if (document.getElementById('count-option').checked) {
+          loadBarGraph(tsvData.slice(
               lowerDataBound * DATA_PER_POS,
-              upperDataBound * DATA_PER_POS
-            ),
-            yAxisOption
-          );
-        } else if (yAxisOption == LOG) {
-          loadBarGraph(
-            tsvDataCount.slice(
+              upperDataBound * DATA_PER_POS), COUNT);
+        } else if (document.getElementById('log-option').checked) {
+          loadBarGraph(tsvData.slice(
               lowerDataBound * DATA_PER_POS,
-              upperDataBound * DATA_PER_POS
-            ),
-            yAxisOption
-          );
-        } else if (yAxisOption == PROPORTION) {
-          loadBarGraph(
-            tsvDataProp.slice(
+              upperDataBound * DATA_PER_POS), LOG);
+        } else if (document.getElementById('proportion-option').checked) {
+          loadBarGraph(tsvDataProp.slice(
               lowerDataBound * DATA_PER_POS,
-              upperDataBound * DATA_PER_POS
-            ),
-            yAxisOption
-          );
+              upperDataBound * DATA_PER_POS), PROPORTION);
         }
+      }
+
+      document.getElementById('loadGraph').addEventListener('click', (e) => {
+        // let yAxisOption = COUNT;
+
+        let lowerDataBound = BOUNDS.low;
+        let upperDataBound = BOUNDS.high;
+
+        // if (document.getElementById('count-option').checked) {
+        //   yAxisOption = COUNT;
+        // } else if (document.getElementById('log-option').checked) {
+        //   yAxisOption = LOG;
+        // } else if (document.getElementById('proportion-option').checked) {
+        //   yAxisOption = PROPORTION;
+        // }
+        
+        lowerDataBound = parseInt(document.getElementById('lower-bound').value);
+        upperDataBound =
+          parseInt(document.getElementById('upper-bound').value) + 1;
+
+        // vega.scheme('strands', [
+        //   COLORS.A,
+        //   COLORS.C,
+        //   COLORS.G,
+        //   COLORS.T,
+        //   COLORS.N
+        // ]);
+
+        // added
+        loadSBV(lowerDataBound, upperDataBound, tsvDataCount, tsvDataProp);
+
+        // if (yAxisOption == COUNT) {
+        //   loadBarGraph(
+        //     tsvDataCount.slice(
+        //       lowerDataBound * DATA_PER_POS,
+        //       upperDataBound * DATA_PER_POS
+        //     ),
+        //     yAxisOption
+        //   );
+        // } else if (yAxisOption == LOG) {
+        //   loadBarGraph(
+        //     tsvDataCount.slice(
+        //       lowerDataBound * DATA_PER_POS,
+        //       upperDataBound * DATA_PER_POS
+        //     ),
+        //     yAxisOption
+        //   );
+        // } else if (yAxisOption == PROPORTION) {
+        //   loadBarGraph(
+        //     tsvDataProp.slice(
+        //       lowerDataBound * DATA_PER_POS,
+        //       upperDataBound * DATA_PER_POS
+        //     ),
+        //     yAxisOption
+        //   );
+        // }
       });
     </script>
   </body>
