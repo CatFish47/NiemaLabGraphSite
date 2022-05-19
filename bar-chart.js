@@ -4,15 +4,19 @@ function loadBarGraph(data, yAxisData) {
     let height = viewElement.offsetHeight / 2;
     let yscale;
 
+    let yAxisName = 'default';
     if (yAxisData == LOG) {
         yscale = "symlog";
+        yAxisName = "Count (Log Scale)";
     } else {
         yscale = "linear";
+        yAxisName = "Count (Linear Scale)";
     }
 
     let label = 'default';
     if (yAxisData == PROPORTION) {
         label = 'Proportion';
+        yAxisName = "Proportion";
     } else {
         label = 'Count';
     }
@@ -91,8 +95,8 @@ function loadBarGraph(data, yAxisData) {
         ],
 
         axes: [
-            { orient: 'bottom', scale: 'x', zindex: 1, labelOverlap: "parity" },
-            { orient: 'left', scale: 'y', zindex: 1, labelOverlap: "greedy" }
+            { orient: 'bottom', scale: 'x', zindex: 1, labelOverlap: "parity", title: "Genome Position" },
+            { orient: 'left', scale: 'y', zindex: 1, labelOverlap: "greedy", title: `${yAxisName}` }
         ],
 
         marks: [
