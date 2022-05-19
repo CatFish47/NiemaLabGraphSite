@@ -4,6 +4,11 @@ body {
   background-color: hsl(0, 0%, 98%);
 }
 
+h1,
+h3 {
+  margin: 1em 0 0.5em 0;
+}
+
 #layout {
   display: grid;
   grid-template-columns: 20% 80%;
@@ -15,7 +20,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0 2vw;
   background-color: #eee;
   font-size: 0.8em;
@@ -52,6 +57,15 @@ body {
   margin-bottom: auto;
 }
 
-#info {
+#range-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#info-box {
   font-size: 0.8em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
 }

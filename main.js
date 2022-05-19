@@ -116,7 +116,9 @@ function setVegaScheme() {
 }
 
 function checkIssues(lowBounds, highBounds) {
-    if (!FILE_STATUS.sbv || !FILE_STATUS.fas) {
+    const fasFile = document.getElementById('fasta-upload').files[0];
+
+    if (!FILE_STATUS.sbv || (fasFile && !FILE_STATUS.fas)) {
         return CHECK_FILES_ERR;
     }
 

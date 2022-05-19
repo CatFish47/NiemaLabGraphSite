@@ -15,6 +15,7 @@
         <input type="file" id="fasta-upload" />
         <br />
         <button id="upload-files">Upload Files</button>
+        <br />
         <h3>Color Picker</h3>
         <div id="color-grid">
           <label>A</label>
@@ -55,31 +56,41 @@
         </div>
 
         <h3>Y-Axis Options</h3>
-        <form>
+        <div>
           <input type="radio" id="count-option" name="yaxis" checked="true" />
           <label for="count-option">Count (Linear Scale)</label>
-          <br />
+        </div>
+        <div>
           <input type="radio" id="log-option" name="yaxis" />
           <label for="log-option">Count (Log Scale)</label>
-          <br />
+        </div>
+        <div>
           <input type="radio" id="proportion-option" name="yaxis" />
           <label for="proportion-option">Proportion</label>
-        </form>
+        </div>
         <h3>Range of Data</h3>
         <div id="range-selector">
-          <span>Lower:</span>
+          <span>Range: </span>
           <input type="number" id="lower-bound" min="0" max="0" />
-          <br />
-          <span>Upper:</span>
+          <span>-</span>
           <input type="number" id="upper-bound" min="0" max="0" />
         </div>
         <br />
         <button id="loadGraph">Load SamBamViz</button>
         <br />
-        <div id="info">
-          Hover over the graph, and click on the circular button with 3
-          horizontal dots in the top right corner. To export, you can save as
-          SVG or PNG.
+        <div id="info-box">
+          <div>
+            <b>Export:</b> Click on the circular "..." button in the top-right
+            corner to save as SVG or PNG.
+          </div>
+          <div>
+            <b>Color/Y-Axis:</b> Click "Load SamBamViz" after customizing to
+            update plot.
+          </div>
+          <div>
+            <b>Reset Range</b> Click "Upload Files" to reset data range (keeps
+            colors/Y-axis).
+          </div>
         </div>
       </div>
       <div id="graph">
