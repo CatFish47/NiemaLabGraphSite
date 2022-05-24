@@ -27,6 +27,31 @@ const FILE_STATUS = {
     fas: false
 }
 
+const Y_AXIS_LABEL_LOG = "Count (Log Scale)";
+const Y_AXIS_LABEL_LIN = "Count (Linear SCale)";
+const Y_AXIS_LABEL_PROP = "Proportion";
+
+const TOOLTIP_COUNT = "Count";
+const TOOLTIP_PROP = "Proportion";
+
+const FAS_SELECTOR = document.getElementById('fasta-load');
+const SBV_SELECTOR = document.getElementById('sambamviz-load');
+const LOAD_FILES_BUTTON = document.getElementById('load-files')
+const LOW_BOUNDS_SETTER = document.getElementById('lower-bound');
+const UPPER_BOUNDS_SETTER = document.getElementById('upper-bound');
+const GRAPH_DISPLAY = document.getElementById('view');
+
+const COUNT_OPTION = document.getElementById('linear-option');
+const LOG_OPTION = document.getElementById('log-option');
+const PROP_OPTION = document.getElementById('proportion-option')
+
+const COLOR_PICKERS = document.querySelectorAll('.color-picker');
+const COLOR_PICKER_A = document.getElementById('a-color');
+const COLOR_PICKER_C = document.getElementById('c-color');
+const COLOR_PICKER_G = document.getElementById('g-color');
+const COLOR_PICKER_T = document.getElementById('t-color');
+const COLOR_PICKER_N = document.getElementById('n-color');
+
 let tsvString;
 let genSeq = [];
 let tsvDataCount = [];

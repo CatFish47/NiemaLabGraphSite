@@ -7,14 +7,14 @@
     <div id="layout">
       <div id="options">
         <h1>SamBamViz</h1>
-        <h3>File Upload</h3>
-        <label>Upload SamBamViz File:</label>
-        <input type="file" id="sambamviz-upload" />
+        <h3>File Select</h3>
+        <label>Select SamBamViz File:</label>
+        <input type="file" id="sambamviz-load" />
         <br />
-        <label>Upload FASTA File:</label>
-        <input type="file" id="fasta-upload" />
+        <label>Select FASTA File:</label>
+        <input type="file" id="fasta-load" />
         <br />
-        <button id="upload-files">Upload Files</button>
+        <button id="load-files">Load SamBamViz</button>
         <br />
         <h3>Color Picker</h3>
         <div id="color-grid">
@@ -57,8 +57,8 @@
 
         <h3>Y-Axis Options</h3>
         <div>
-          <input type="radio" id="count-option" name="yaxis" checked="true" />
-          <label for="count-option">Count (Linear Scale)</label>
+          <input type="radio" id="linear-option" name="yaxis" checked="true" />
+          <label for="linear-option">Count (Linear Scale)</label>
         </div>
         <div>
           <input type="radio" id="log-option" name="yaxis" />
@@ -76,7 +76,7 @@
           <input type="number" id="upper-bound" min="0" max="0" />
         </div>
         <br />
-        <button id="loadGraph">Load SamBamViz</button>
+        <button id="load-graph">Update SamBamViz</button>
         <br />
         <div id="info-box">
           <div>

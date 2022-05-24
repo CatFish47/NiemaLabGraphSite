@@ -1,4 +1,9 @@
-document.getElementById('upload-files').addEventListener('click', () => {
+/**
+ * Event listener code for clicking on buttons
+ */
+
+// 
+document.getElementById('load-files').addEventListener('click', () => {
     generateData();
 
     let lowerDataBound = BOUNDS.low;
@@ -6,25 +11,15 @@ document.getElementById('upload-files').addEventListener('click', () => {
     loadSBV(lowerDataBound, upperDataBound, tsvDataCount, tsvDataProp);
 });
 
-document
-    .getElementById('sambamviz-upload')
-    .addEventListener('change', () => {
-        processFiles(SBV);
-    });
-
-document
-    .getElementById('fasta-upload')
-    .addEventListener('change', () => {
-        processFiles(FAS);
-    });
-
-document.querySelectorAll('.color-picker').forEach((input) => {
-    input.addEventListener('change', () => {
-        setVegaScheme();
-    });
+SBV_SELECTOR.addEventListener('change', () => {
+    processFiles(SBV);
 });
 
-document.getElementById('loadGraph').addEventListener('click', () => {
+FAS_SELECTOR.addEventListener('change', () => {
+    processFiles(FAS);
+});
+
+document.getElementById('load-graph').addEventListener('click', () => {
     let lowerDataBound = BOUNDS.low;
     let upperDataBound = BOUNDS.high;
 
@@ -34,6 +29,16 @@ document.getElementById('loadGraph').addEventListener('click', () => {
     loadSBV(lowerDataBound, upperDataBound, tsvDataCount, tsvDataProp);
 });
 
+// handles color changing inputs
+document.querySelectorAll('.color-picker').forEach((input) => {
+    input.addEventListener('change', () => {
+        setVegaScheme();
+    });
+});
+
+/**
+ * Turns the data from a TSV file to an array in memory
+ */
 async function generateData() {
     try {
         await tsvToArr(tsvString);
@@ -42,11 +47,15 @@ async function generateData() {
     }
 }
 
+/**
+ * Processes a file differently depending on the file type
+ * @param {String} fileType - the file extension
+ */
 async function processFiles(fileType) {
     try {
         if (fileType === SBV) {
             const sbvFile =
-                document.getElementById('sambamviz-upload').files[0];
+                document.getElementById('sambamviz-load').files[0];
 
             if (sbvFile.name.split(".")[1] === "tsv") {
                 FILE_STATUS.sbv = true;
@@ -57,7 +66,7 @@ async function processFiles(fileType) {
         }
 
         if (fileType === FAS) {
-            const fasFile = document.getElementById('fasta-upload').files[0];
+            const fasFile = document.getElementById('fasta-load').files[0];
 
             if (fasFile.name.split(".")[1] === "fas") {
                 FILE_STATUS.fas = true;
@@ -71,8 +80,13 @@ async function processFiles(fileType) {
     }
 }
 
+/**
+ * Takes a SamBamViz file and puts it into a string
+ * @param {File} file - the SamBamViz file as a TSV
+ * @returns a Promise after the file has been read
+ */
 function processSamBamViz(file) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         let reader = new FileReader();
 
         reader.onload = () => {
@@ -84,8 +98,13 @@ function processSamBamViz(file) {
     });
 }
 
+/**
+ * Takes a fasta file and parses the genome sequence into a string
+ * @param {File} file - the FASTA file
+ * @returns a Promise after the file has been read
+ */
 function processFasta(file) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         let reader = new FileReader();
 
         reader.onload = () => {
@@ -107,6 +126,9 @@ function processFasta(file) {
     });
 }
 
+/**
+ * Gets the colors from the color selector
+ */
 function setVegaScheme() {
     COLORS.A = document.getElementById('a-color').value;
     COLORS.C = document.getElementById('c-color').value;
@@ -115,8 +137,15 @@ function setVegaScheme() {
     COLORS.N = document.getElementById('n-color').value;
 }
 
+/**
+ * Checks to make sure that there are no invalid inputs before loading
+ * the graph
+ * @param {Number} lowBounds - the lower bounds of data inputted
+ * @param {Number} highBounds - the higher bounds of data inputted
+ * @returns an error message depending on the error found
+ */
 function checkIssues(lowBounds, highBounds) {
-    const fasFile = document.getElementById('fasta-upload').files[0];
+    const fasFile = document.getElementById('fasta-load').files[0];
 
     if (!FILE_STATUS.sbv || (fasFile && !FILE_STATUS.fas)) {
         return CHECK_FILES_ERR;
@@ -129,6 +158,14 @@ function checkIssues(lowBounds, highBounds) {
     return "";
 }
 
+/**
+ * Prepares to take the data and convert it into a graph
+ * @param {Number} lowerDataBound - the lower bounds of data inputted
+ * @param {Number} upperDataBound - the higher bounds of data inputted
+ * @param {String[]} tsvData - count data in an array
+ * @param {String[]} tsvDataProp - proportional data in an array
+ * @returns Nothing
+ */
 function loadSBV(lowerDataBound, upperDataBound, tsvData, tsvDataProp) {
     let errorMessage = checkIssues(lowerDataBound, upperDataBound);
     if (errorMessage) {
@@ -154,7 +191,7 @@ function loadSBV(lowerDataBound, upperDataBound, tsvData, tsvDataProp) {
         upperDataBound * DATA_PER_POS
     );
 
-    if (document.getElementById('count-option').checked) {
+    if (document.getElementById('linear-option').checked) {
         loadBarGraph(countData, COUNT);
     } else if (document.getElementById('log-option').checked) {
         loadBarGraph(countData, LOG);
