@@ -114,10 +114,7 @@ function loadBarGraph(data, yAxisData) {
                         y: { scale: 'y', field: 'y0' },
                         y2: { scale: 'y', field: 'y1' },
                         fill: { scale: 'color', field: 'type' },
-                        tooltip:
-                        {
-                            "signal": tooltipDisplay
-                        }
+                        tooltip: { "signal": tooltipDisplay }
                     },
                     update: {
                         fillOpacity: { value: 1 }
