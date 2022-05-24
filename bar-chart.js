@@ -6,7 +6,7 @@
  * @param {string} yAxisData - type of graph
  */
 function loadBarGraph(data, yAxisData) {
-    let viewElement = document.getElementById("view");
+    let viewElement = GRAPH_DISPLAY;
     let width = 2 * viewElement.offsetWidth / 3;
     let height = viewElement.offsetHeight / 2;
     let yscale;                     // to tell vega type of graph
@@ -14,18 +14,18 @@ function loadBarGraph(data, yAxisData) {
     let yAxisName = 'default';      // for y-axis label
     if (yAxisData == LOG) {
         yscale = 'symlog';
-        yAxisName = 'Count (Log Scale)';
+        yAxisName = Y_AXIS_LABEL_LOG;
     } else {
         yscale = 'linear';
-        yAxisName = 'Count (Linear Scale)';
+        yAxisName = Y_AXIS_LABEL_LIN;
     }
 
     let label = 'default';          // for tooltip 
     if (yAxisData == PROPORTION) {
-        label = 'Proportion';
-        yAxisName = "Proportion";
+        label = TOOLTIP_PROP;
+        yAxisName = Y_AXIS_LABEL_PROP;
     } else {
-        label = 'Count';
+        label = TOOLTIP_COUNT;
     }
 
     let hasGenSeq = genSeq.length > 0;  // if reference file is available

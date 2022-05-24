@@ -2,8 +2,7 @@
  * Event listener code for clicking on buttons
  */
 
-// 
-document.getElementById('load-files').addEventListener('click', () => {
+LOAD_FILES_BUTTON.addEventListener('click', () => {
     generateData();
 
     let lowerDataBound = BOUNDS.low;
@@ -19,13 +18,12 @@ FAS_SELECTOR.addEventListener('change', () => {
     processFiles(FAS);
 });
 
-document.getElementById('load-graph').addEventListener('click', () => {
+UPDATE_GRAPH_BUTTON.addEventListener('click', () => {
     let lowerDataBound = BOUNDS.low;
     let upperDataBound = BOUNDS.high;
 
-    lowerDataBound = parseInt(document.getElementById('lower-bound').value);
-    upperDataBound =
-        parseInt(document.getElementById('upper-bound').value) + 1;
+    lowerDataBound = parseInt(LOW_BOUNDS_SETTER.value);
+    upperDataBound = parseInt(UPPER_BOUNDS_SETTER.value) + 1;
     loadSBV(lowerDataBound, upperDataBound, tsvDataCount, tsvDataProp);
 });
 
@@ -55,7 +53,7 @@ async function processFiles(fileType) {
     try {
         if (fileType === SBV) {
             const sbvFile =
-                document.getElementById('sambamviz-load').files[0];
+                SBV_SELECTOR.files[0];
 
             if (sbvFile.name.split(".")[1] === "tsv") {
                 FILE_STATUS.sbv = true;
@@ -66,7 +64,7 @@ async function processFiles(fileType) {
         }
 
         if (fileType === FAS) {
-            const fasFile = document.getElementById('fasta-load').files[0];
+            const fasFile = FAS_SELECTOR.files[0];
 
             if (fasFile.name.split(".")[1] === "fas") {
                 FILE_STATUS.fas = true;
@@ -130,11 +128,11 @@ function processFasta(file) {
  * Gets the colors from the color selector
  */
 function setVegaScheme() {
-    COLORS.A = document.getElementById('a-color').value;
-    COLORS.C = document.getElementById('c-color').value;
-    COLORS.G = document.getElementById('g-color').value;
-    COLORS.T = document.getElementById('t-color').value;
-    COLORS.N = document.getElementById('n-color').value;
+    COLORS.A = COLOR_PICKER_A.value;
+    COLORS.C = COLOR_PICKER_C.value;
+    COLORS.G = COLOR_PICKER_G.value;
+    COLORS.T = COLOR_PICKER_T.value;
+    COLORS.N = COLOR_PICKER_N.value;
 }
 
 /**
@@ -145,7 +143,7 @@ function setVegaScheme() {
  * @returns an error message depending on the error found
  */
 function checkIssues(lowBounds, highBounds) {
-    const fasFile = document.getElementById('fasta-load').files[0];
+    const fasFile = FAS_SELECTOR.files[0];
 
     if (!FILE_STATUS.sbv || (fasFile && !FILE_STATUS.fas)) {
         return CHECK_FILES_ERR;
@@ -191,11 +189,11 @@ function loadSBV(lowerDataBound, upperDataBound, tsvData, tsvDataProp) {
         upperDataBound * DATA_PER_POS
     );
 
-    if (document.getElementById('linear-option').checked) {
+    if (COUNT_OPTION.checked) {
         loadBarGraph(countData, COUNT);
-    } else if (document.getElementById('log-option').checked) {
+    } else if (LOG_OPTION.checked) {
         loadBarGraph(countData, LOG);
-    } else if (document.getElementById('proportion-option').checked) {
+    } else if (PROP_OPTION.checked) {
         loadBarGraph(propData, PROPORTION);
     }
 }

@@ -36,7 +36,8 @@ const TOOLTIP_PROP = "Proportion";
 
 const FAS_SELECTOR = document.getElementById('fasta-load');
 const SBV_SELECTOR = document.getElementById('sambamviz-load');
-const LOAD_FILES_BUTTON = document.getElementById('load-files')
+const LOAD_FILES_BUTTON = document.getElementById('load-files');
+const UPDATE_GRAPH_BUTTON = document.getElementById('update-graph');
 const LOW_BOUNDS_SETTER = document.getElementById('lower-bound');
 const UPPER_BOUNDS_SETTER = document.getElementById('upper-bound');
 const GRAPH_DISPLAY = document.getElementById('view');

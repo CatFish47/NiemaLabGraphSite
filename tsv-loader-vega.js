@@ -85,8 +85,8 @@ async function tsvToArr(tsvData) {
     });
 
     // update ranges on page
-    document.getElementById('lower-bound').value = BOUNDS.low;
-    document.getElementById('upper-bound').value = BOUNDS.high;
-    document.getElementById('lower-bound').max = BOUNDS.high;
-    document.getElementById('upper-bound').max = BOUNDS.high;
+    LOW_BOUNDS_SETTER.value = BOUNDS.low;
+    UPPER_BOUNDS_SETTER.value = BOUNDS.high;
+    LOW_BOUNDS_SETTER.max = BOUNDS.high;
+    UPPER_BOUNDS_SETTER.max = BOUNDS.high;
 }
