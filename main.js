@@ -1,7 +1,6 @@
 /**
  * Event listener code for clicking on buttons
  */
-
 LOAD_FILES_BUTTON.addEventListener('click', () => {
     generateData();
 
@@ -27,8 +26,10 @@ UPDATE_GRAPH_BUTTON.addEventListener('click', () => {
     loadSBV(lowerDataBound, upperDataBound, tsvDataCount, tsvDataProp);
 });
 
-// handles color changing inputs
-document.querySelectorAll('.color-picker').forEach((input) => {
+/**
+ * Handles color changing inputs
+ */
+COLOR_PICKERS.forEach((input) => {
     input.addEventListener('change', () => {
         setVegaScheme();
     });
