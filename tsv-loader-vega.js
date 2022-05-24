@@ -1,3 +1,11 @@
+/**
+ * This function takes in a string with data read from the tsv file that the 
+ * user uploaded and creates two Object[], tsvDataCount and tsvDataProp, which
+ * Vega will use to plot the bar charts. This function is called after pressing
+ * the "Load SamBamViz" button. Clicking this button will generate the default
+ * ranges on the web page.
+ * @param {string} tsvData - read from uploaded tsv file as string
+ */
 async function tsvToArr(tsvData) {
     tsvDataCount = [];
     tsvDataProp = [];
@@ -5,7 +13,8 @@ async function tsvToArr(tsvData) {
     BOUNDS.high = -1;
 
     await d3.tsvParse(tsvData, function (data) {
-        const total = parseInt(data.A) + parseInt(data.G) + parseInt(data.C) + parseInt(data.T) + parseInt(data.Other) || 1;
+        const total = parseInt(data.A) + parseInt(data.G) + parseInt(data.C) + 
+            parseInt(data.T) + parseInt(data.Other) || 1;
         const ref = genSeq[BOUNDS.high + 1]
 
         // Count Data
@@ -75,6 +84,7 @@ async function tsvToArr(tsvData) {
         BOUNDS.high++;
     });
 
+    // update ranges on page
     document.getElementById('lower-bound').value = BOUNDS.low;
     document.getElementById('upper-bound').value = BOUNDS.high;
     document.getElementById('lower-bound').max = BOUNDS.high;

@@ -1,19 +1,26 @@
+/**
+ * Loads the stacked bar graph from data extracted from TSV file and user 
+ * customizations (e.g. type of graph) by using Vega. data passed into function
+ * should already be in user-defined data range. Colors should already be set.
+ * @param {Object[]} data - data extracted from TSV file
+ * @param {string} yAxisData - type of graph
+ */
 function loadBarGraph(data, yAxisData) {
     let viewElement = document.getElementById("view");
     let width = 2 * viewElement.offsetWidth / 3;
     let height = viewElement.offsetHeight / 2;
-    let yscale;
+    let yscale;                     // to tell vega type of graph
 
-    let yAxisName = 'default';
+    let yAxisName = 'default';      // for y-axis label
     if (yAxisData == LOG) {
-        yscale = "symlog";
-        yAxisName = "Count (Log Scale)";
+        yscale = 'symlog';
+        yAxisName = 'Count (Log Scale)';
     } else {
-        yscale = "linear";
-        yAxisName = "Count (Linear Scale)";
+        yscale = 'linear';
+        yAxisName = 'Count (Linear Scale)';
     }
 
-    let label = 'default';
+    let label = 'default';          // for tooltip 
     if (yAxisData == PROPORTION) {
         label = 'Proportion';
         yAxisName = "Proportion";
@@ -21,17 +28,15 @@ function loadBarGraph(data, yAxisData) {
         label = 'Count';
     }
 
-    let hasGenSeq = genSeq.length > 0; // add parameter 
+    let hasGenSeq = genSeq.length > 0;  // if reference file is available
     let tooltipDisplay = hasGenSeq ?
-        // `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value, 'Reference': datum.ref}` : 
         `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value, 'Reference': datum.ref}` :
         `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value}`;
-    // let tooltipDisplay = `{'Letter': datum.type, 'Position': datum.pos, ${label}: datum.value}`;
 
     // stacked bar chart
     var barChart = {
         $schema: 'https://vega.github.io/schema/vega/v5.json',
-        description: 'A basic stacked bar chart example.',
+        description: 'A stacked bar chart for SamBamViz.',
         width: width,
         height: height,
         padding: 5,
@@ -70,7 +75,6 @@ function loadBarGraph(data, yAxisData) {
             {
                 name: 'color',
                 type: 'ordinal',
-                // range: 'category',
                 range: { scheme: "strands" },
                 domain: { data: 'table', field: 'type' },
             }
@@ -126,21 +130,5 @@ function loadBarGraph(data, yAxisData) {
         ]
     };
 
-    /*var tooltipOptions = {
-        formatTooltip: (value, sanitize) => {
-            if (yAxisData == COUNT) {
-                return `hi there`;
-            }
-            console.log(value);
-            // return `Pos: ${sanitize(value)}.`
-            var str = "Letter: " + value["type"] + "\n" + 
-                    "Position: " + value["pos"] + "\n" +
-                        "";
-            console.log(str);
-            return ["Letter: " + value["type"], "Position: " + value["pos"]];
-        }
-      };*/
-
-    // vegaEmbed('#view', barChart, { tooltip: tooltipOptions });
     vegaEmbed('#view', barChart);
 }
