@@ -3,7 +3,7 @@
  * customizations (e.g. type of graph) by using Vega. data passed into function
  * should already be in user-defined data range. Colors should already be set.
  * @param {Object[]} data - data extracted from TSV file
- * @param {string} yAxisData - type of graph
+ * @param {String} yAxisData - type of graph
  */
 function loadBarGraph(data, yAxisData) {
     let viewElement = GRAPH_DISPLAY;

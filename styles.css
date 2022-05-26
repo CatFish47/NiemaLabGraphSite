@@ -9,6 +9,11 @@ h3 {
   margin: 1em 0 0.5em 0;
 }
 
+.important {
+  color: red;
+  font-weight: bold;
+}
+
 #layout {
   display: grid;
   grid-template-columns: 20% 80%;
